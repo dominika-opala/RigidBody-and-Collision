@@ -26,15 +26,16 @@ public class Cube : MonoBehaviour {
 
         Debug.Log("Collided with: " + collision.collider.name + " Count: " + collisionCount);
 
-        if (collision.collider.name == "Obstacle" && collisionCount == 0) {
+        var movingCube = collision.gameObject;
+        var obstacle = collision.collider.gameObject;
+        var oldPosition = obstacle.transform.position;
 
-            var movingCube = collision.gameObject;
-            var obstacle = collision.collider.gameObject;
+
+        if (collision.collider.name == "Obstacle" && collisionCount == 0) {
+       
 
             Debug.Log("Hit the Obstacle");
-            var oldPosition = obstacle.transform.position;
             Destroy(obstacle);
-
             newCube = Instantiate(PrefabCube, oldPosition, Quaternion.identity) as GameObject;
             newCube.name = "NewCube";
             collisionCount++;
@@ -45,7 +46,7 @@ public class Cube : MonoBehaviour {
         
             Debug.Log("Hit the NewCube");
             Destroy(newCube);
-            Sphere = Instantiate(PrefabSphere, transform.position, Quaternion.identity) as GameObject;
+            Sphere = Instantiate(PrefabSphere, oldPosition, Quaternion.identity) as GameObject;
             collisionCount++;
         }
     }
